@@ -1,10 +1,10 @@
 const modals = () => {
+  let scrollWidth = calcScrollY();
+
   function bindShowModal(selector, modalSelector, closeSelector) {
     const selectors = document.querySelectorAll(selector),
       modal = document.querySelector(modalSelector),
       close = document.querySelector(closeSelector);
-
-    let scrollWidth = calcScrollY();
 
     selectors.forEach((item) =>
       item.addEventListener("click", (e) => {
@@ -54,6 +54,17 @@ const modals = () => {
 
     return scr;
   }
+
+  function showModalByTime(selector, ms) {
+    let elem = document.querySelector(selector);
+    setTimeout(() => {
+      elem.style.display = "block";
+      document.body.style.overflow = "hidden";
+      document.body.style.marginRight = `${scrollWidth}px`;
+    }, ms);
+  }
+
+  showModalByTime(".popup", 3000000);
 };
 
 export default modals;
