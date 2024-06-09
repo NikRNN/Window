@@ -65,6 +65,70 @@ const modals = () => {
 
 /***/ }),
 
+/***/ "./src/js/modules/server.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/server.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const server = () => {
+  const messages = {
+    loading: "Идет отправка Ваших данных...",
+    success: "Спасибо, скоро мы свяжемся с Вами",
+    failure: "Ошибка, попробуйте позже"
+  };
+  const forms = document.querySelectorAll("form"),
+    inputs = document.querySelectorAll("input"),
+    phoneInputs = document.querySelectorAll('[name="user_phone"]');
+  const postDataToServer = async (url, data) => {
+    document.querySelector(".status").textContent = messages.loading;
+    let res = await fetch(url, {
+      method: "POST",
+      body: data
+    });
+    return await res.text();
+  };
+  function clearInputs() {
+    inputs.forEach(item => item.value = "");
+  }
+  function checkPhone() {
+    phoneInputs.forEach(item => {
+      item.addEventListener("input", () => {
+        item.value = item.value.replace(/\D/, "");
+      });
+    });
+  }
+  checkPhone();
+  forms.forEach(item => {
+    item.addEventListener("submit", e => {
+      e.preventDefault();
+      let statusPostToServer = document.createElement("div");
+      statusPostToServer.classList.add("status");
+      item.appendChild(statusPostToServer);
+      const formData = new FormData(item);
+      postDataToServer("assets/server.php", formData).then(res => {
+        console.log(res);
+        statusPostToServer.textContent = messages.success;
+      }).catch(() => {
+        statusPostToServer.textContent = messages.failure;
+      }).finally(() => {
+        clearInputs();
+        setTimeout(() => {
+          statusPostToServer.remove();
+        }, 3000);
+      });
+    });
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (server);
+
+/***/ }),
+
 /***/ "./src/js/modules/tabs.js":
 /*!********************************!*\
   !*** ./src/js/modules/tabs.js ***!
@@ -14025,6 +14089,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider */ "./src/js/slider.js");
 /* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
 /* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
+/* harmony import */ var _modules_server__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/server */ "./src/js/modules/server.js");
+
 
 
 
@@ -14032,6 +14098,7 @@ window.addEventListener("DOMContentLoaded", () => {
   (0,_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])();
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])(".glazing_slider", ".glazing_block", ".glazing_content", "active");
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])(".decoration_slider", ".no_click", ".decoration_content > div > div", "after_click");
+  (0,_modules_server__WEBPACK_IMPORTED_MODULE_3__["default"])();
 });
 })();
 

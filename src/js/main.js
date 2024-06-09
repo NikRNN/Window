@@ -1,6 +1,7 @@
 import "./slider";
 import modals from "./modules/modals";
 import tabs from "./modules/tabs";
+import server from "./modules/server";
 
 window.addEventListener("DOMContentLoaded", () => {
   modals();
@@ -11,4 +12,5 @@ window.addEventListener("DOMContentLoaded", () => {
     ".decoration_content > div > div",
     "after_click"
   );
+  server();
 });
