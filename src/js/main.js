@@ -2,8 +2,13 @@ import "./slider";
 import modals from "./modules/modals";
 import tabs from "./modules/tabs";
 import server from "./modules/server";
+import getInfoFromUser from "./modules/getInfoFromUser";
 
 window.addEventListener("DOMContentLoaded", () => {
+  const userInfo = {};
+
+  getInfoFromUser(userInfo);
+
   modals();
   tabs(".glazing_slider", ".glazing_block", ".glazing_content", "active");
   tabs(
@@ -12,5 +17,12 @@ window.addEventListener("DOMContentLoaded", () => {
     ".decoration_content > div > div",
     "after_click"
   );
-  server();
+  tabs(
+    ".balcon_icons",
+    ".balcon_icons_img",
+    ".big_img > img",
+    "do_image_more",
+    "inline"
+  );
+  server(userInfo);
 });

@@ -1,4 +1,12 @@
-const server = () => {
+const server = (state) => {
+  const formEnd = document.querySelector(".popup_calc_end");
+
+  function closeFormEnd(elem) {
+    elem.style.display = "none";
+    document.body.style.marginRight = `0px`;
+    document.body.style.overflow = "";
+  }
+
   const messages = {
     loading: "Идет отправка Ваших данных...",
     success: "Спасибо, скоро мы свяжемся с Вами",
@@ -42,6 +50,11 @@ const server = () => {
       item.appendChild(statusPostToServer);
 
       const formData = new FormData(item);
+      if (item.getAttribute("data-calc") === "end") {
+        for (let key in state) {
+          formData.append(key, state[key]);
+        }
+      }
 
       postDataToServer("assets/server.php", formData)
         .then((res) => {
@@ -55,7 +68,8 @@ const server = () => {
           clearInputs();
           setTimeout(() => {
             statusPostToServer.remove();
-          }, 3000);
+            closeFormEnd(formEnd);
+          }, 2000);
         });
     });
   });

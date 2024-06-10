@@ -1,16 +1,25 @@
 const modals = () => {
   let scrollWidth = calcScrollY();
 
-  function bindShowModal(selector, modalSelector, closeSelector) {
+  function bindShowModal(
+    selector,
+    modalSelector,
+    closeSelector,
+    closeClickOverlay = true
+  ) {
     const selectors = document.querySelectorAll(selector),
       modal = document.querySelector(modalSelector),
-      close = document.querySelector(closeSelector);
+      close = document.querySelector(closeSelector),
+      windows = document.querySelectorAll("[data-modal]");
 
     selectors.forEach((item) =>
       item.addEventListener("click", (e) => {
         if (e.target) {
           e.preventDefault();
         }
+        windows.forEach((item) => {
+          item.style.display = "none";
+        });
 
         modal.style.display = "block";
         document.body.style.overflow = "hidden";
@@ -19,13 +28,17 @@ const modals = () => {
     );
 
     close.addEventListener("click", () => {
+      windows.forEach((item) => {
+        item.display = "none";
+        document.body.style.marginRight = `0px`;
+      });
       modal.style.display = "none";
       document.body.style.overflow = "";
       document.body.style.marginRight = `0px`;
     });
 
     modal.addEventListener("click", (e) => {
-      if (e.target === modal) {
+      if (e.target === modal && closeClickOverlay) {
         modal.style.display = "none";
         document.body.style.overflow = "";
         document.body.style.marginRight = `0px`;
@@ -39,6 +52,19 @@ const modals = () => {
     ".popup_engineer .popup_close"
   );
   bindShowModal(".phone_link", ".popup", ".popup .popup_close");
+  bindShowModal(".popup_calc_btn", ".popup_calc", ".popup_calc_close");
+  bindShowModal(
+    ".popup_calc_button",
+    ".popup_calc_profile",
+    ".popup_calc_profile_close",
+    false
+  );
+  bindShowModal(
+    ".popup_calc_profile_button",
+    ".popup_calc_end",
+    ".popup_calc_end_close",
+    false
+  );
 
   function calcScrollY() {
     let elem = document.createElement("div");
