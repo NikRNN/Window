@@ -1022,6 +1022,12 @@ textarea:focus {
   padding: 1rem 5rem;
 }
 
+.disabled_btn {
+  background: lightgrey;
+  box-shadow: none;
+  border: lightgrey;
+}
+
 .popup_calc_profile {
   display: none;
   position: fixed;
@@ -1078,6 +1084,10 @@ textarea:focus {
   height: 22px;
   border: 2px solid #ccc;
   border-radius: 3px;
+}
+
+.border_form_info {
+  border: 1px solid red !important;
 }
 
 .popup_calc_profile_content .checkbox-custom,

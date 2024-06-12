@@ -3,6 +3,7 @@ import modals from "./modules/modals";
 import tabs from "./modules/tabs";
 import server from "./modules/server";
 import getInfoFromUser from "./modules/getInfoFromUser";
+import timer from "./modules/timer";
 
 window.addEventListener("DOMContentLoaded", () => {
   const userInfo = {};
@@ -25,4 +26,5 @@ window.addEventListener("DOMContentLoaded", () => {
     "inline"
   );
   server(userInfo);
+  timer();
 });

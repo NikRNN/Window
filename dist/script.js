@@ -17,26 +17,54 @@ const getInfoFromUser = infoState => {
     width = document.querySelector("#width"),
     height = document.querySelector("#height"),
     option = document.querySelectorAll("select"),
-    typeProfile = document.querySelectorAll(".checkbox");
+    typeProfile = document.querySelectorAll(".checkbox"),
+    checkBoxes = document.querySelectorAll(".checkbox-custom"),
+    btn_profile = document.querySelector(".popup_calc_button"),
+    btn_profile2 = document.querySelector(".popup_calc_profile_button");
+  btn_profile.classList.add("disabled_btn");
+  btn_profile.setAttribute("disabled", "true");
+  btn_profile2.classList.add("disabled_btn");
+  btn_profile2.setAttribute("disabled", "true");
+  function startInitForm() {
+    width.classList.add("border_form_info");
+    height.classList.add("border_form_info");
+    option.forEach(item => item.classList.add("border_form_info"));
+    checkBoxes.forEach(item => item.classList.add("border_form_info"));
+  }
+  startInitForm();
+  function checkInputsFirstForm(infoState) {
+    if ("typeForm" in infoState && "width" in infoState && infoState["width"] !== " " && "height" in infoState && infoState["height"] !== " ") {
+      btn_profile.classList.remove("disabled_btn");
+      btn_profile.removeAttribute("disabled");
+    }
+  }
   typeForm.forEach((item, index) => {
     item.addEventListener("click", () => {
       infoState.typeForm = index;
+      checkInputsFirstForm(infoState);
     });
   });
   width.addEventListener("input", () => {
+    width.classList.remove("border_form_info");
     infoState.width = width.value;
+    checkInputsFirstForm(infoState);
   });
   height.addEventListener("input", () => {
+    height.classList.remove("border_form_info");
     infoState.height = height.value;
+    checkInputsFirstForm(infoState);
   });
   option.forEach(item => {
     item.addEventListener("change", () => {
       infoState.optionWindow = item.value;
+      checkInputsSecondForm(infoState);
     });
   });
   typeProfile.forEach((item, index) => {
     item.addEventListener("change", () => {
+      checkBoxes.forEach(item => item.classList.remove("border_form_info"));
       index === 0 ? infoState.typeProfile = "Холодное" : infoState.typeProfile = "Теплое";
+      checkInputsSecondForm(infoState);
       typeProfile.forEach((box, j) => {
         box.checked = false;
         if (index === j) {
@@ -45,6 +73,12 @@ const getInfoFromUser = infoState => {
       });
     });
   });
+  function checkInputsSecondForm(infoState) {
+    if ("optionWindow" in infoState && "typeProfile" in infoState) {
+      btn_profile2.classList.remove("disabled_btn");
+      btn_profile2.removeAttribute("disabled");
+    }
+  }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getInfoFromUser);
 
@@ -143,6 +177,11 @@ const server = state => {
     document.body.style.marginRight = `0px`;
     document.body.style.overflow = "";
   }
+  function clearUserInfo(obj) {
+    for (let key in obj) {
+      delete state[key];
+    }
+  }
   const messages = {
     loading: "Идет отправка Ваших данных...",
     success: "Спасибо, скоро мы свяжемся с Вами",
@@ -192,6 +231,8 @@ const server = state => {
         setTimeout(() => {
           statusPostToServer.remove();
           closeFormEnd(formEnd);
+          clearUserInfo(state);
+          console.log(state);
         }, 2000);
       });
     });
@@ -245,6 +286,71 @@ const tabs = (headerSelector, tabsSelector, contentSelector, activeClass, displa
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (tabs);
+
+/***/ }),
+
+/***/ "./src/js/modules/timer.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/timer.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const timer = () => {
+  let deadline = "2024-06-20";
+  function getClock(endtime) {
+    let days, hours, minutes, second;
+    let dif = Date.parse(endtime) - Date.parse(new Date());
+    if (dif <= 0) {
+      days = 0;
+      hours = 0;
+      minutes = 0;
+      second = 0;
+    }
+    days = Math.floor(dif / (24 * 60 * 60 * 1000));
+    hours = Math.floor(dif / (60 * 60 * 1000) % 24);
+    minutes = Math.floor(dif / (60 * 1000) % 60);
+    second = Math.floor(dif / 1000 % 60);
+    return {
+      dif,
+      days,
+      hours,
+      minutes,
+      second
+    };
+  }
+  function ifNumberIsZero(num) {
+    if (num < 10) {
+      return "0" + num;
+    } else {
+      return num;
+    }
+  }
+  function getTimer(endtime) {
+    const days = document.querySelector("#days"),
+      hours = document.querySelector("#hours"),
+      minutes = document.querySelector("#minutes"),
+      seconds = document.querySelector("#seconds"),
+      timerId = setInterval(updateClock, 1000);
+    function updateClock() {
+      const timer = getClock(endtime);
+      if (timer.dif <= 0) {
+        clearInterval(timerId);
+      }
+      days.innerHTML = ifNumberIsZero(timer.days);
+      hours.innerHTML = ifNumberIsZero(timer.hours);
+      minutes.innerHTML = ifNumberIsZero(timer.minutes);
+      seconds.innerHTML = ifNumberIsZero(timer.second);
+    }
+  }
+  getClock(deadline);
+  getTimer(deadline);
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (timer);
 
 /***/ }),
 
@@ -14163,6 +14269,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
 /* harmony import */ var _modules_server__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/server */ "./src/js/modules/server.js");
 /* harmony import */ var _modules_getInfoFromUser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/getInfoFromUser */ "./src/js/modules/getInfoFromUser.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+
 
 
 
@@ -14176,6 +14284,7 @@ window.addEventListener("DOMContentLoaded", () => {
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])(".decoration_slider", ".no_click", ".decoration_content > div > div", "after_click");
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])(".balcon_icons", ".balcon_icons_img", ".big_img > img", "do_image_more", "inline");
   (0,_modules_server__WEBPACK_IMPORTED_MODULE_3__["default"])(userInfo);
+  (0,_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])();
 });
 })();
 

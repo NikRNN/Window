@@ -7,6 +7,12 @@ const server = (state) => {
     document.body.style.overflow = "";
   }
 
+  function clearUserInfo(obj) {
+    for (let key in obj) {
+      delete state[key];
+    }
+  }
+
   const messages = {
     loading: "Идет отправка Ваших данных...",
     success: "Спасибо, скоро мы свяжемся с Вами",
@@ -69,6 +75,8 @@ const server = (state) => {
           setTimeout(() => {
             statusPostToServer.remove();
             closeFormEnd(formEnd);
+            clearUserInfo(state);
+            console.log(state);
           }, 2000);
         });
     });
