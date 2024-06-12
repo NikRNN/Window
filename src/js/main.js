@@ -4,6 +4,7 @@ import tabs from "./modules/tabs";
 import server from "./modules/server";
 import getInfoFromUser from "./modules/getInfoFromUser";
 import timer from "./modules/timer";
+import image from "./modules/image";
 
 window.addEventListener("DOMContentLoaded", () => {
   const userInfo = {};
@@ -27,4 +28,5 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   server(userInfo);
   timer();
+  image();
 });

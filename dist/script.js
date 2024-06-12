@@ -84,6 +84,45 @@ const getInfoFromUser = infoState => {
 
 /***/ }),
 
+/***/ "./src/js/modules/image.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/image.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const image = () => {
+  const section = document.querySelector(".works"),
+    imgModal = document.createElement("div"),
+    imgBig = document.createElement("img");
+  imgModal.classList.add("popup");
+  section.appendChild(imgModal);
+  imgModal.appendChild(imgBig);
+  imgModal.style.alignItems = "center";
+  imgModal.style.justifyContent = "center";
+  imgModal.style.display = "none";
+  section.addEventListener("click", e => {
+    e.preventDefault();
+    let target = e.target;
+    if (target && target.classList.contains("preview")) {
+      const path = target.parentNode.getAttribute("href");
+      imgModal.style.display = "flex";
+      imgBig.setAttribute("src", path);
+      imgBig.style.display = "block";
+    }
+    if (target.classList.contains("popup")) {
+      imgModal.style.display = "none";
+    }
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (image);
+
+/***/ }),
+
 /***/ "./src/js/modules/modals.js":
 /*!**********************************!*\
   !*** ./src/js/modules/modals.js ***!
@@ -301,7 +340,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 const timer = () => {
-  let deadline = "2024-06-20";
+  let deadline = "2024-06-30";
   function getClock(endtime) {
     let days, hours, minutes, second;
     let dif = Date.parse(endtime) - Date.parse(new Date());
@@ -310,11 +349,12 @@ const timer = () => {
       hours = 0;
       minutes = 0;
       second = 0;
+    } else {
+      days = Math.floor(dif / (24 * 60 * 60 * 1000));
+      hours = Math.floor(dif / (60 * 60 * 1000) % 24);
+      minutes = Math.floor(dif / (60 * 1000) % 60);
+      second = Math.floor(dif / 1000 % 60);
     }
-    days = Math.floor(dif / (24 * 60 * 60 * 1000));
-    hours = Math.floor(dif / (60 * 60 * 1000) % 24);
-    minutes = Math.floor(dif / (60 * 1000) % 60);
-    second = Math.floor(dif / 1000 % 60);
     return {
       dif,
       days,
@@ -324,7 +364,7 @@ const timer = () => {
     };
   }
   function ifNumberIsZero(num) {
-    if (num < 10) {
+    if (num < 10 & num >= 0) {
       return "0" + num;
     } else {
       return num;
@@ -336,15 +376,16 @@ const timer = () => {
       minutes = document.querySelector("#minutes"),
       seconds = document.querySelector("#seconds"),
       timerId = setInterval(updateClock, 1000);
+    updateClock();
     function updateClock() {
       const timer = getClock(endtime);
-      if (timer.dif <= 0) {
-        clearInterval(timerId);
-      }
       days.innerHTML = ifNumberIsZero(timer.days);
       hours.innerHTML = ifNumberIsZero(timer.hours);
       minutes.innerHTML = ifNumberIsZero(timer.minutes);
       seconds.innerHTML = ifNumberIsZero(timer.second);
+      if (timer.dif <= 0) {
+        clearInterval(timerId);
+      }
     }
   }
   getClock(deadline);
@@ -14270,6 +14311,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_server__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/server */ "./src/js/modules/server.js");
 /* harmony import */ var _modules_getInfoFromUser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/getInfoFromUser */ "./src/js/modules/getInfoFromUser.js");
 /* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_image__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/image */ "./src/js/modules/image.js");
+
 
 
 
@@ -14285,6 +14328,7 @@ window.addEventListener("DOMContentLoaded", () => {
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])(".balcon_icons", ".balcon_icons_img", ".big_img > img", "do_image_more", "inline");
   (0,_modules_server__WEBPACK_IMPORTED_MODULE_3__["default"])(userInfo);
   (0,_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])();
+  (0,_modules_image__WEBPACK_IMPORTED_MODULE_6__["default"])();
 });
 })();
 

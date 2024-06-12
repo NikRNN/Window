@@ -1,5 +1,5 @@
 const timer = () => {
-  let deadline = "2024-06-20";
+  let deadline = "2024-06-30";
 
   function getClock(endtime) {
     let days, hours, minutes, second;
@@ -11,12 +11,12 @@ const timer = () => {
       hours = 0;
       minutes = 0;
       second = 0;
+    } else {
+      days = Math.floor(dif / (24 * 60 * 60 * 1000));
+      hours = Math.floor((dif / (60 * 60 * 1000)) % 24);
+      minutes = Math.floor((dif / (60 * 1000)) % 60);
+      second = Math.floor((dif / 1000) % 60);
     }
-
-    days = Math.floor(dif / (24 * 60 * 60 * 1000));
-    hours = Math.floor((dif / (60 * 60 * 1000)) % 24);
-    minutes = Math.floor((dif / (60 * 1000)) % 60);
-    second = Math.floor((dif / 1000) % 60);
 
     return {
       dif,
@@ -28,7 +28,7 @@ const timer = () => {
   }
 
   function ifNumberIsZero(num) {
-    if (num < 10) {
+    if ((num < 10) & (num >= 0)) {
       return "0" + num;
     } else {
       return num;
@@ -42,17 +42,19 @@ const timer = () => {
       seconds = document.querySelector("#seconds"),
       timerId = setInterval(updateClock, 1000);
 
+    updateClock();
+
     function updateClock() {
       const timer = getClock(endtime);
-
-      if (timer.dif <= 0) {
-        clearInterval(timerId);
-      }
 
       days.innerHTML = ifNumberIsZero(timer.days);
       hours.innerHTML = ifNumberIsZero(timer.hours);
       minutes.innerHTML = ifNumberIsZero(timer.minutes);
       seconds.innerHTML = ifNumberIsZero(timer.second);
+
+      if (timer.dif <= 0) {
+        clearInterval(timerId);
+      }
     }
   }
 
